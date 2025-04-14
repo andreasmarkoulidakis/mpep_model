@@ -1,19 +1,25 @@
 ################################################################################################################
 ################################################################################################################
 rm(list=ls())
-library(rstan)
+
 library(cmdstanr)
+library(rstan)
 library(bayesplot)
 library(loo)
 library(posterior)
+library(readr)
+library(base)
+library(boot)
+library(tidyverse)
 ################################################################################################################
 ################################################################################################################
 ################################################################################################################
+
 
 options(mc.cores = parallel::detectCores())
 
 #set your working directory
-stan_data <- data.frame(read_csv(".../example_data.csv"))
+stan_data <- data.frame(read_csv("example_data.csv"))
 colnames(stan_data)
 no_of_years <- 9
 no_counts_perFY <- length(which(stan_data$FinancialYear=='2014/15'))
@@ -143,9 +149,9 @@ stanfitted <- stanmod$sample(data=data_list,
                              max_treedepth=15,
                              init=initial_values)
 stanfit_table <- data.frame(stanfitted$summary())
-print(range(na.omit(stanfit_table$rhat)))
-print(range(na.omit(stanfit_table$ess_tail)))
-print(range(na.omit(stanfit_table$ess_bulk)))
+range(na.omit(stanfit_table$rhat))
+range(na.omit(stanfit_table$ess_tail))
+range(na.omit(stanfit_table$ess_bulk))
 
 
 ########################################################################
