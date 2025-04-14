@@ -8,4 +8,6 @@ No regional stratification is included due to sparse events and restrictions fro
 
 The file "model/mpep_model.stan" contains the Stan implementation of the MPEP model.
 
-The file "MPEP_stan.R" includes the R commands to load the data, set initial values, compile the "mpep_model.stan" model, and run the MPEP model.
+The file "MPEP_stan.R" includes the R commands to load the data, set initial values, compile the "mpep_model.stan" model, and run the MPEP model in Stan.
+
+The file "MPEP_jags.R" includes the R commands to load the data, set initial values, and run the MPEP model in JAGS.
