@@ -136,9 +136,9 @@ transformed parameters{
   vector[N_size] N;
   matrix[N_size,2] mean_events_extra;
   {
-  vector[N_size] nmiss;
+  vector[N_size] n_extra;
   vector[N_size] correction_term;
-  vector[N_size] pyr_miss;
+  vector[N_size] pyr_extra;
     for(i in 1:N_size){
       prev[i] = inv_logit(gamma[1] +
                         gamma[2]*age_g2[i] +
@@ -154,15 +154,13 @@ transformed parameters{
                         gamma[12]*year2022[i] +
                         PREV_RE_age2_fy[year[i]]*age_g2[i] +
                         PREV_RE_age3_fy[year[i]]*age_g3[i] 
-                        //) + prev_known[i];
                         ) + prev_known[i];
       N[i] = P[i] * prev[i];
-//      nmiss[i] = N[i] - n_known[i];
-      nmiss[i] = N[i] - (prev_known[i]*P[i]);
+      n_extra[i] = N[i] - (prev_known[i]*P[i]);
       correction_term[i] = (1/lambda_others[i])*(1 - exp(-lambda_others[i]));
-      pyr_miss[i] = pyr_died[i] + (nmiss[i] - pyr_died[i])*correction_term[i]; 
-      mean_events_extra[i,1] = lambda_off[i,1] * pyr_miss[i];
-      mean_events_extra[i,2] = lambda_off[i,2] * pyr_miss[i];
+      pyr_extra[i] = pyr_died[i] + (n_extra[i] - pyr_died[i])*correction_term[i]; 
+      mean_events_extra[i,1] = lambda_off[i,1] * pyr_extra[i];
+      mean_events_extra[i,2] = lambda_off[i,2] * pyr_extra[i];
     }
   }
   //////////////////////////////////////////////
